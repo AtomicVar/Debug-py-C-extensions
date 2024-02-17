@@ -16,7 +16,7 @@ This will build a `hello` extension module in `build/`, e.g. `build/hello.cpytho
 
 ## How to run/debug
 
-Here's a simple Python script that loads the `hello` extension module and calls the `hello` function:
+`main.py` is a simple Python script that loads the `hello` extension module and calls the `hello` function:
 
 ```python
 # main.py
