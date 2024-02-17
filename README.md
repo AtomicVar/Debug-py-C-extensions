@@ -16,13 +16,13 @@ This will build a `hello` extension module in `build/`, e.g. `build/hello.cpytho
 
 ## How to run/debug
 
-Write a simple Python script inside `build/` that loads the `hello` extension module and calls the `hello` function:
+Here's a simple Python script that loads the `hello` extension module and calls the `hello` function:
 
 ```python
-# build/hello.py
-from hello import hello
+# main.py
+import build.hello as hello
 
-hello(42)
+hello.hello(42)
 ```
 
 Set a breakpoint using VS Code GUI to `hello.cpp`'s `hello` function, and click
@@ -33,8 +33,25 @@ the Debug button of VS Code. You can check the debug config: [.vscode/launch.jso
 You can also use GDB/LLDB CLI to debug it:
 
 ```sh
-cd build
-lldb python hello.py
-(lldb) b hello.cpp:hello
+lldb python main.py
+(lldb) target create "python"
+Current executable set to '/Users/guoshuai/mambaforge/envs/mlx-dev-py38/bin/python' (arm64).
+(lldb) settings set -- target.run-args  "main.py"
+(lldb) b hello.cpp:4
+Breakpoint 1: no locations (pending).
+WARNING:  Unable to resolve breakpoint to any actual locations.
 (lldb) r
+Process 24624 launched: '/Users/guoshuai/mambaforge/envs/mlx-dev-py38/bin/python' (arm64)
+1 location added to breakpoint 1
+Process 24624 stopped
+* thread #1, queue = 'com.apple.main-thread', stop reason = breakpoint 1.1
+    frame #0: 0x00000001006d46cc hello.cpython-38-darwin.so`hello(x=42) at hello.cpp:4:6
+   1    #include <pybind11/pybind11.h>
+   2   
+   3    int hello(int x) {
+-> 4        x++;
+   5        printf("Hello, %d\n", x);
+   6        return x;
+   7    }
+Target 0: (python) stopped.
 ```
